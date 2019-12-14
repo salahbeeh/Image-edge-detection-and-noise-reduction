@@ -22,7 +22,7 @@ function varargout = project(varargin)
 
 % Edit the above text to modify the response to help project
 
-% Last Modified by GUIDE v2.5 11-Dec-2019 23:53:22
+% Last Modified by GUIDE v2.5 13-Dec-2019 23:40:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -55,7 +55,7 @@ function project_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for project
 handles.output = hObject;
 
-set(handles.axes1,'visible','off');
+set(handles.axes1,'visible','on');
 set(handles.axes2,'visible','off');
 set(handles.axes6,'visible','off');
 set(handles.axes7,'visible','off');
@@ -77,9 +77,9 @@ function varargout = project_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
+% --- Executes on button press in selectImage.
+function selectImage_Callback(hObject, eventdata, handles)
+% hObject    handle to selectImage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global toGray;
@@ -92,20 +92,13 @@ imshow(RGB);
 toGray = rgb2gray(RGB);
 
 
-% --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on selection change in popupmenu1.
-function popupmenu1_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
+% --- Executes on selection change in edgeMenu.
+function edgeMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to edgeMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global toGray ;
-Choice = get(handles.popupmenu1,'Value');
+Choice = get(handles.edgeMenu,'Value');
 
 switch Choice 
     case 2 
@@ -130,13 +123,13 @@ else
 end
 
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu1
+% Hints: contents = cellstr(get(hObject,'String')) returns edgeMenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from edgeMenu
 
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
+function edgeMenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edgeMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -147,28 +140,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
-
-
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-global toGray;
-[file,path]= uigetfile({'*.*'});
-imageLocation = fullfile(path,file);    
-RGB = imread(imageLocation);
-axes(handles.axes3);
-imshow(RGB);
-toGray = rgb2gray(RGB);
-
-
-% --- Executes on button press in pushbutton6.
-function pushbutton6_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 % --- Executes on selection change in popupmenu2.
@@ -180,41 +151,14 @@ function popupmenu2_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu2 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupmenu2
 
-
-% --- Executes during object creation, after setting all properties.
-function popupmenu2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in pushbutton8.
-function pushbutton8_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton8 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton10.
-function pushbutton10_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton10 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on selection change in popupmenu3.
-function popupmenu3_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu3 (see GCBO)
+% --- Executes on selection change in noiseMenu.
+function noiseMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to noiseMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global toGray ;
-Choice = get(handles.popupmenu3,'Value');
+global RGB;
+Choice = get(handles.noiseMenu,'Value');
 
 switch Choice 
     case 2 
@@ -223,7 +167,7 @@ switch Choice
         Noise = imnoise(toGray ,'speckle')
     case 4 
         LEN = 21;
-        THETA = 11;
+        THETA = 45;
         motionBlur = fspecial('motion', LEN, THETA);
         Noise = imfilter(toGray, motionBlur, 'conv', 'circular');
         
@@ -240,13 +184,13 @@ end
 
 
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu3 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu3
+% Hints: contents = cellstr(get(hObject,'String')) returns noiseMenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from noiseMenu
 
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu3_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu3 (see GCBO)
+function noiseMenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to noiseMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -257,43 +201,20 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on selection change in popupmenu5.
-function popupmenu5_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu5 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu5
-
-
-% --- Executes during object creation, after setting all properties.
-function popupmenu5_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on selection change in popupmenu6.
-function popupmenu6_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu6 (see GCBO)
+% --- Executes on selection change in removeNoise.
+function removeNoise_Callback(hObject, eventdata, handles)
+% hObject    handle to removeNoise (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global toGray ;
-Choice = get(handles.popupmenu6,'Value');
+Choice = get(handles.removeNoise,'Value');
 
 switch Choice 
     case 2 
         Filter = filter2(fspecial('average',3),toGray)/255; %Avarage
     case 3 
         Filter = medfilt2(toGray);
-        
+               
     otherwise
         disp(' You Did Not CHoose Any Noise Yet')
         
@@ -305,13 +226,13 @@ else
     imshow(Filter);
 end
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu6 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu6
+% Hints: contents = cellstr(get(hObject,'String')) returns removeNoise contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from removeNoise
 
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu6_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu6 (see GCBO)
+function removeNoise_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to removeNoise (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
